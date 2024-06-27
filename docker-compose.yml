@@ -34,7 +34,7 @@ services:
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
     volumes:
-      - ./containers/upstream:/docker-entrypoint-initdb.d
+#      - ./containers/upstream:/docker-entrypoint-initdb.d
       - ./data:/input_data
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "airflow" ]
@@ -102,3 +102,9 @@ services:
       MINIO_ROOT_PASSWORD: minio123
     command: server --console-address ":9001" /data
 
+  remote_chromedriver:
+    container_name: remote_chromedriver
+    image: seleniarm/standalone-chromium:latest
+    ports:
+      - 4444:4444
+    restart: always

@@ -16,3 +16,10 @@ duckdb==1.0.0
 plotly==5.22.0
 jupyter==1.0.0
 types-requests==2.32.0.20240602
+sqlalchemy
+requests
+pyspark
+beautifulsoup4
+webdriver_manager
+selenium
+pyarrow
