@@ -1,14 +1,7 @@
 FROM apache/airflow:2.9.2
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
-RUN pip install --no-cache-dir \
-    sqlalchemy \
-    requests \
-    pyspark \
-    beautifulsoup4 \
-    webdriver_manager \
-    selenium \
-    pyarrow
+RUN pip install --no-cache-dir
 
 COPY quarto.sh /
 RUN cd / && bash /quarto.sh
@@ -24,12 +17,12 @@ User root
 #     default-jdk
 
 
-RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current-amd64.deb && \
-    apt install -y ./google-chrome-stable_current-amd64.deb && \
-    rm google-chrome-stable_current-amd64.deb &&\
-    apt-get clean
+#RUN apt-get update && \
+#    apt-get install -y wget unzip && \
+#    wget https://dl.google.com/linux/direct/google-chrome-stable_current-amd64.deb && \
+#    apt install -y ./google-chrome-stable_current-amd64.deb && \
+#    rm google-chrome-stable_current-amd64.deb &&\
+#    apt-get clean
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
