@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import time
 import logging
 import sys
+import glob
 
 # Setup logger
 error_log_directory = "/opt/airflow/logs/"
@@ -39,6 +40,20 @@ status_logger.setLevel(logging.INFO)
 URL = "https://transparency-in-coverage.uhc.com/"
 DIRECTORY = "/opt/airflow/data/raw/"
 TIMEOUT = 200
+
+def clean_up_raw_files(raw_data_directory):
+    """
+    Remove all files in the specified raw data directory.
+    """
+    files = glob.glob(os.path.join(raw_data_directory, '*'))
+    for file in files:
+        try:
+            os.remove(file)
+            logging.info(f"Removed raw file: {file}")
+            print(f"Removed raw file: {file}")
+        except Exception as e:
+            logging.error(f"Error removing file {file}: {e}")
+            print(f"Error removing file {file}: {e}")
 
 def fetch_webpage(url, timeout=200):
     """Fetch the webpage content using Selenium and return the page source."""
@@ -139,4 +154,5 @@ def main():
             sys.exit(1)  # Signal to Airflow that the task has failed
 
 if __name__ == "__main__":
+    clean_up_raw_files(DIRECTORY)
     main()

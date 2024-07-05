@@ -88,20 +88,6 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
 
-  minio:
-    image: 'minio/minio:latest'
-    hostname: minio
-    container_name: minio
-    ports:
-      - '9000:9000'  
-      - '9001:9001'
-    environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-    command: server --console-address ":9001" /data
-
   remote_chromedriver:
     container_name: remote_chromedriver
     image: seleniarm/standalone-chromium:latest

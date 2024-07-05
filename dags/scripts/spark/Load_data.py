@@ -10,7 +10,7 @@ logging.basicConfig(filename='load_parquet_to_postgres.log', level=logging.INFO,
 
 # Configuration
 DB_CONN_STRING = 'postgresql+psycopg2://airflow:airflow@localhost:5432/airflow'
-PARQUET_FILE = '/opt/airflow/data/processed/processed_data.parquet'
+PARQUET_FILE = f"/opt/airflow/data/processed/processed_data_{today_date}.parquet"
 #PARQUET_FILE = '/Users/varshini/Downloads/Shafik/Data_Engineering/Airflow_Project/data/processed/processed_data.parquet'
 # Create SQLAlchemy engine and metadata
 engine = create_engine(DB_CONN_STRING)

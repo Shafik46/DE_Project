@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import glob
 import logging
+import datetime
 import duckdb
 
 # Set up logging
@@ -71,6 +72,7 @@ def process_json_files(json_path,output_parquet_file):
 if __name__ == "__main__":
 
     json_path = "/opt/airflow/data/raw/*.json"
-    output_parquet_file = "/opt/airflow/data/processed/processed_data.parquet"
+    today_date = datetime.now().strftime('%Y%m%d')
+    output_parquet_file = f"/opt/airflow/data/processed/processed_data_{today_date}.parquet"
     process_json_files(json_path, output_parquet_file)
 

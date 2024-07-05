@@ -104,6 +104,7 @@ def perform_data_validation(parquet_file):
     else:
         return 'Data Validation Check Passed'
 
+
 # Default arguments for the DAG
 default_args = {
     'owner': 'airflow',
