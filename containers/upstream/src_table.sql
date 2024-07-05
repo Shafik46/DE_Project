@@ -11,3 +11,12 @@ CREATE TABLE health_plans.uhg_plans (
     location TEXT,
     ingestion_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE health_plans.load_batches (
+    batch_id SERIAL PRIMARY KEY,
+    load_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    record_count INTEGER,
+    status TEXT,
+    main_table TEXT
+);
+ß
