@@ -9,22 +9,22 @@ from datetime import datetime
 logging.basicConfig(filename='load_parquet_to_postgres.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 # Configuration
-DB_CONN_STRING = 'postgresql+psycopg2://airflow:airflow@localhost:5432/airflow'
+DB_CONN_STRING = 'postgresql+psycopg2://airflow:airflow@postgres:5432/airflow'
+today_date = datetime.now().strftime('%Y%m%d')
 PARQUET_FILE = f"/opt/airflow/data/processed/processed_data_{today_date}.parquet"
-#PARQUET_FILE = '/Users/varshini/Downloads/Shafik/Data_Engineering/Airflow_Project/data/processed/processed_data.parquet'
-# Create SQLAlchemy engine and metadata
+
+# Create SQLAlchemy engine
 engine = create_engine(DB_CONN_STRING)
 
 # Read Parquet file into DataFrame
 df = pq.read_table(PARQUET_FILE).to_pandas()
 df['ingestion_timestamp'] = datetime.utcnow()
 
-# Log and print the count of records being loaded
+# Log the count of records being loaded
 record_count = len(df)
 logging.info(f"Number of records to be loaded: {record_count}")
-print(f"Number of records to be loaded: {record_count}")
 
-# Define the table schema to match the actual PostgreSQL table
+# Define the table schema
 metadata = MetaData(schema='health_plans')
 uhg_plans = Table('uhg_plans', metadata,
                   Column('reporting_entity_name', String),
@@ -43,12 +43,6 @@ load_batches = Table('load_batches', metadata,
                      Column('record_count', Integer),
                      Column('status', String),
                      Column('main_table', String))
-df['ingestion_timestamp'] = datetime.utcnow()
-
-# Log and print the count of records being loaded
-record_count = len(df)
-logging.info(f"Number of records to be loaded: {record_count}")
-print(f"Number of records to be loaded: {record_count}")
 
 # Create a session and load data into PostgreSQL
 Session = sessionmaker(bind=engine)
@@ -60,16 +54,18 @@ with Session() as session:
 
         # Log the successful load and insert into the batch table
         logging.info(f"Successfully loaded {record_count} records from {PARQUET_FILE} to PostgreSQL table health_plans.uhg_plans")
-        print(f"Successfully loaded {record_count} records into the table health_plans.uhg_plans")
 
         # Insert a record into the batch table
         batch_record = {
+            'load_timestamp': datetime.utcnow(),
             'record_count': record_count,
             'status': 'Success',
             'main_table': 'health_plans.uhg_plans'
         }
         session.execute(load_batches.insert(), batch_record)
         session.commit()
+
+        print(f"Successfully loaded {record_count} records into the table health_plans.uhg_plans")
     except Exception as e:
         logging.error(f"Error loading data to PostgreSQL: {e}")
         print("Error occurred:", e)
@@ -77,6 +73,7 @@ with Session() as session:
 
         # Insert a record into the batch table with failure status
         batch_record = {
+            'load_timestamp': datetime.utcnow(),
             'record_count': 0,
             'status': 'Failed',
             'main_table': 'health_plans.uhg_plans'
