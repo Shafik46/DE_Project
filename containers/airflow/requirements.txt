@@ -1,21 +1,9 @@
 black==24.4.2
 flake8==7.0.0
-mypy==1.10.0
-isort==5.13.2
-moto[all]==5.0.9
 pytest==8.2.2
-pytest-mock==3.14.0
 apache-airflow-client==2.9.0
-yoyo-migrations==8.2.0
-duckdb==1.0.0
-plotly==5.22.0
-jupyter==1.0.0
-types-requests==2.32.0.20240602
 apache-airflow-providers-apache-spark==4.8.1
-duckdb==1.0.0
-plotly==5.22.0
 jupyter==1.0.0
-types-requests==2.32.0.20240602
 sqlalchemy==1.4.49
 requests==2.31.0
 beautifulsoup4==4.12.2
@@ -23,4 +11,5 @@ webdriver_manager==3.8.6
 selenium==4.10.0
 cuallee==0.10.3
 polars==0.20.31
+urllib3==1.26.16
 

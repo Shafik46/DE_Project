@@ -2,8 +2,7 @@ import pandas as pd
 import json
 import glob
 import logging
-import datetime
-import duckdb
+from datetime import datetime
 
 # Set up logging
 log_path = "/opt/airflow/logs/data_processing.log"

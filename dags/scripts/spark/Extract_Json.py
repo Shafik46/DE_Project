@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import time
 import logging
 import sys
+import warnings
 import glob
 
 # Setup logger
@@ -41,11 +42,17 @@ URL = "https://transparency-in-coverage.uhc.com/"
 DIRECTORY = "/opt/airflow/data/raw/"
 TIMEOUT = 200
 
+
 def clean_up_raw_files(raw_data_directory):
     """
     Remove all files in the specified raw data directory.
     """
+    logging.info("Starting cleanup of raw files.")
     files = glob.glob(os.path.join(raw_data_directory, '*'))
+    if not files:
+        logging.info("No raw files to clean up.")
+        print("No raw files to clean up.")
+        return
     for file in files:
         try:
             os.remove(file)
@@ -55,7 +62,7 @@ def clean_up_raw_files(raw_data_directory):
             logging.error(f"Error removing file {file}: {e}")
             print(f"Error removing file {file}: {e}")
 
-def fetch_webpage(url, timeout=200):
+def fetch_webpage(url, timeout=TIMEOUT):
     """Fetch the webpage content using Selenium and return the page source."""
     try:
         remote_webdriver_url = 'http://remote_chromedriver:4444/wd/hub'  # Update with your remote WebDriver URL
@@ -123,8 +130,9 @@ def download_file(link, directory, index):
         error_logger.error(f"{index}: {link} - Unexpected error: {e}")
         raise
 
-def main():
-    """Main function to orchestrate the download process."""
+
+if __name__ == "__main__":
+    clean_up_raw_files(DIRECTORY)
     try:
         html = fetch_webpage(URL)
         if not html:
@@ -152,7 +160,3 @@ def main():
             sys.exit(0)  # Signal to Airflow that the task is complete
         else:
             sys.exit(1)  # Signal to Airflow that the task has failed
-
-if __name__ == "__main__":
-    clean_up_raw_files(DIRECTORY)
-    main()
