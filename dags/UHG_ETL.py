@@ -13,10 +13,6 @@ from cuallee import Check, CheckLevel
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-from selenium import webdriver
 
 def check_url_with_selenium(url, timeout=10):
     """Check if a URL loads successfully using Selenium with a remote ChromeDriver."""
